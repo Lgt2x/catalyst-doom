@@ -1,7 +1,9 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.20)
 
+project(DOOM LANGUAGES C CXX)
 
-project(DOOM C)
+
+find_package(catalyst 2.0 REQUIRED)
 
 add_executable(doomgeneric
         am_map.c
@@ -28,9 +30,9 @@ add_executable(doomgeneric
         doomdef.c
         doomdef.h
         doomfeatures.h
+        doomgeneric_catalyst.cxx
         doomgeneric.c
         doomgeneric.h
-        doomgeneric_xlib.c
         doom.h
         doomkeys.h
         doomstat.c
@@ -189,4 +191,4 @@ add_executable(doomgeneric
 set_target_properties(doomgeneric PROPERTIES COMPILE_FLAGS "-ggdb3 -Os -Wall -DNORMALUNIX -DLINUX -DSNDSERV -D_DEFAULT_SOURCE")
 set_target_properties(doomgeneric PROPERTIES LINK_FLAGS "-Wl,--gc-sections -Wl,--Map,doomgeneric.map")
 
-target_link_libraries(doomgeneric PRIVATE m c X11)
+target_link_libraries(doomgeneric PRIVATE m c X11 catalyst::catalyst)
