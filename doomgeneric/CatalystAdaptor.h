@@ -20,24 +20,24 @@ void Initialize(int argc, char* argv[])
     catalyst_status err = catalyst_initialize(conduit_cpp::c_node(&node));
     if (err != catalyst_status_ok)
     {
-        std::cout << "ERROR: Failed to initialize Catalyst: " << err << std::endl;
+        std::cerr << "ERROR: Failed to initialize Catalyst: " << err << std::endl;
     }
 
     std::cout << "Error ? " << err << std::endl;
 
 }
 
-void Execute(int cycle, double time, uint32_t* DG_ScreenBuffer)
+void Execute(int cycle, uint32_t* DG_ScreenBuffer)
 {
 
-    std::cout << "Exec ?" << std::endl;
+//    std::cout << "Exec" << std::endl;
     conduit_cpp::Node exec_params;
 
     auto state = exec_params["catalyst/state"];
     state["timestep"].set(cycle);
-    state["time"].set(time);
+    state["time"].set((double)cycle);
 
-    auto channel = exec_params["catalyst/channels/frame"];
+    auto channel = exec_params["catalyst/channels/grid"];
 
     channel["type"].set("mesh"); // Conduit type
     auto mesh = channel["data"];
@@ -46,9 +46,11 @@ void Execute(int cycle, double time, uint32_t* DG_ScreenBuffer)
     // it easier to think in this order).
     mesh["coordsets/coords/type"].set("uniform");
 
+//    mesh["coordsets/coords/dims/i"].set(DOOMGENERIC_RESX);
+//    mesh["coordsets/coords/dims/j"].set(DOOMGENERIC_RESY);
+
     mesh["coordsets/coords/dims/i"].set(DOOMGENERIC_RESX);
     mesh["coordsets/coords/dims/j"].set(DOOMGENERIC_RESY);
-    mesh["coordsets/coords/dims/k"].set(1);
 
     // Next, add topology
     mesh["topologies/mesh/type"].set("uniform");
@@ -56,15 +58,17 @@ void Execute(int cycle, double time, uint32_t* DG_ScreenBuffer)
 
     // Finally, add fields.
     auto fields = mesh["fields"];
-    fields["pixel/association"].set("point");
+    fields["pixel/association"].set("vertex");
     fields["pixel/topology"].set("mesh");
     fields["pixel/volume_dependent"].set("false");
 
-    // velocity is stored in non-interlaced form (unlike points).
-    fields["velocity/values/x"].set_external(DG_ScreenBuffer, DOOMGENERIC_RESX*DOOMGENERIC_RESY, 0, 4);
-    fields["velocity/values/y"].set_external(DG_ScreenBuffer, DOOMGENERIC_RESX*DOOMGENERIC_RESY, 1, 4);
-    fields["velocity/values/z"].set_external(DG_ScreenBuffer, DOOMGENERIC_RESX*DOOMGENERIC_RESY, 3, 4);
+//    int values[9] = {1,2,3,4,5,6,7,8,9};
+//    fields["pixel/values"].set_external(values, 9,0,sizeof(int));
+    fields["pixel/values"].set_external(DG_ScreenBuffer, DOOMGENERIC_RESY*DOOMGENERIC_RESX, 1, 2*sizeof(uint32_t));
+//    fields["pixel/values/y"].set_external(DG_ScreenBuffer, DOOMGENERIC_RESX*DOOMGENERIC_RESY, 1, 4);
+//    fields["pixel/values/z"].set_external(DG_ScreenBuffer, DOOMGENERIC_RESX*DOOMGENERIC_RESY, 3, 4);
 
+//    std::cout <<exec_params.to_yaml() << std::endl;
     catalyst_status err = catalyst_execute(conduit_cpp::c_node(&exec_params));
     if (err != catalyst_status_ok)
     {

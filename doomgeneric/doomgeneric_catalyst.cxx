@@ -26,6 +26,7 @@ static XImage *s_Image = NULL;
 static unsigned short s_KeyQueue[KEYQUEUE_SIZE];
 static unsigned int s_KeyQueueWriteIndex = 0;
 static unsigned int s_KeyQueueReadIndex = 0;
+static unsigned int cycle = 0;
 
 static unsigned char convertToDoomKey(unsigned int key)
 {
@@ -156,7 +157,8 @@ void DG_DrawFrame()
 
     }
 
-    CatalystAdaptor::Execute(1,1.0, DG_ScreenBuffer);
+    cycle++;
+    CatalystAdaptor::Execute(cycle, DG_ScreenBuffer);
 }
 
 void DG_SleepMs(uint32_t ms)
