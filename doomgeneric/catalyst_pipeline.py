@@ -14,7 +14,6 @@ SetActiveView(None)
 
 layout1 = CreateLayout(name='Layout #1')
 layout1.AssignView(0,renderView1)
-layout1.SetSize(640,400)
 
 SetActiveView(renderView1)
 
@@ -32,24 +31,3 @@ options = catalyst.Options()
 options.GlobalTrigger = 'TimeStep'
 options.EnableCatalystLive = 1
 options.CatalystLiveTrigger = 'TimeStep'
-#
-# def catalyst_execute(info):
-#     global producer
-#
-#     producer.UpdatePipeline()
-#
-#     # get time parameter as example of a parameter changing during the simulation
-#     params = get_execute_params()
-#     # timeParam = float(params[3].split("=")[1])
-#
-#     # show that the time parameter matches the time tracked by catalyst
-#     # assert (timeParam - info.time) < 1e-12
-#
-#     print("executing (cycle={}, time={})".format(info.cycle, info.time))
-#     print("-----")
-#     print("pipeline parameters:")
-#     print("\n".join(params))
-#     print("-----")
-#     print("bounds:", producer.GetDataInformation().GetBounds())
-#     print("velocity-magnitude-range:", producer.PointData["pixel"].GetRange(-1))
-#     print("===================================")
