@@ -1,0 +1,73 @@
+<ServerManagerConfiguration>
+    <ProxyGroup name="sources">
+        <SourceProxy class="vtkSteeringDataGenerator" name="DoomControls">
+            <IntVectorProperty name="PartitionType"
+                               command="SetPartitionType"
+                               number_of_elements="1"
+                               default_values="4"
+                               panel_visibility="never">
+            </IntVectorProperty>
+
+            <IntVectorProperty name="FieldAssociation"
+                               command="SetFieldAssociation"
+                               number_of_elements="1"
+                               default_values="0"
+                               panel_visibility="never">
+            </IntVectorProperty>
+            <IntVectorProperty name="Direction"
+                             command="SetTuple1Int"
+                             clean_command="Clear"
+                             use_index="1"
+                             initial_string="direction"
+                             number_of_elements_per_command="1"
+                             repeat_command="1">
+          </IntVectorProperty>
+            <IntVectorProperty name="Fire"
+                             command="SetTuple1Int"
+                             clean_command="Clear"
+                             use_index="1"
+                             initial_string="fire"
+                             number_of_elements_per_command="1"
+                             repeat_command="1">
+            </IntVectorProperty>
+            <PropertyGroup label="DoomControls" panel_widget="PropertyCollection">
+                <Property name="Direction" function="PrototypeDirection" />
+                <Property name="Fire" function="PrototypeFire" />
+                <Hints>
+                  <PropertyCollectionWidgetPrototype group="misc" name="DoomControlsPrototype" />
+                </Hints>
+            </PropertyGroup>
+            <Hints>
+              <CatalystInitializePropertiesWithMesh mesh="steerable">
+                <Property name="Direction" association="point" array="steerable" />
+                <Property name="Fire" association="point" array="steerable" />
+              </CatalystInitializePropertiesWithMesh>
+            </Hints>
+        </SourceProxy>
+    </ProxyGroup>
+    <ProxyGroup name="misc">
+      <Proxy name="DoomControlsPrototype" label="DoomControls" >
+
+        <IntVectorProperty name="PrototypeDirection"
+                           label="Direction"
+                           number_of_elements="1"
+                           default_values="0">
+          <EnumerationDomain name="enum">
+            <Entry text="stop" value="0" />
+            <Entry text="left" value="1" />
+            <Entry text="right" value="2" />
+            <Entry text="forward" value="3" />
+            <Entry text="backward" value="4" />
+          </EnumerationDomain>
+
+        </IntVectorProperty>
+              <IntVectorProperty name="PrototypeFire"
+                                 label="Fire"
+                                 number_of_elements="1"
+                                 default_values="0">
+        <BooleanDomain name="bool" />
+      </IntVectorProperty>
+      </Proxy>
+    </ProxyGroup>
+</ServerManagerConfiguration>
+

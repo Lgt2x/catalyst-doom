@@ -17,9 +17,11 @@ layout1.AssignView(0,renderView1)
 
 SetActiveView(renderView1)
 
-producer = PVTrivialProducer(registrationName="grid")
+producer = PVTrivialProducer(registrationName="frame")
 rep = Show(producer, renderView1, 'GeometryRepresentation')
 rep.Representation = 'Point Gaussian'
+
+steerable_parameters = CreateSteerableParameters("DoomControls")
 
 ResetCamera()
 
