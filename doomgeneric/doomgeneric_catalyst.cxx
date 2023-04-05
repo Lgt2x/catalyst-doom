@@ -32,23 +32,7 @@ void DG_Init() {
 }
 
 void DG_DrawFrame() {
-  cycle++;
-  CatalystAdaptor::Execute(cycle, DG_ScreenBuffer);
-}
-
-void DG_SleepMs(uint32_t ms) { usleep(ms * 1000 * 5); }
-
-uint32_t DG_GetTicksMs() {
-  struct timeval tp;
-  struct timezone tzp;
-
-  gettimeofday(&tp, &tzp);
-
-  return ((tp.tv_sec * 1000) + (tp.tv_usec / 1000));
-}
-
-int DG_GetKey(int *pressed, unsigned char *doomKey) {
-    // Make sure we are in game
+  // Make sure we are in game
   addKeyToQueue(1, KEY_ENTER);
   addKeyToQueue(0, KEY_ENTER);
 
@@ -60,7 +44,6 @@ int DG_GetKey(int *pressed, unsigned char *doomKey) {
 
     if (old_fire != fire) {
       addKeyToQueue(fire, KEY_FIRE);
-      std::cout << "FIRE ! " << fire << std::endl;
     }
 
     if (old_direction != direction) {
@@ -98,6 +81,23 @@ int DG_GetKey(int *pressed, unsigned char *doomKey) {
     old_direction = direction;
     old_fire = fire;
   }
+
+  cycle++;
+  CatalystAdaptor::Execute(cycle, DG_ScreenBuffer);
+}
+
+void DG_SleepMs(uint32_t ms) { usleep(ms * 1000); }
+
+uint32_t DG_GetTicksMs() {
+  struct timeval tp;
+  struct timezone tzp;
+
+  gettimeofday(&tp, &tzp);
+
+  return (tp.tv_sec * 1000) + (tp.tv_usec / 1000);
+}
+
+int DG_GetKey(int *pressed, unsigned char *doomKey) {
 
   if (s_KeyQueueReadIndex == s_KeyQueueWriteIndex) {
     // key queue is empty
