@@ -1,11 +1,10 @@
 # Catalyst-Doom
 
-PoC of Doom running on Paraview-Catalyst. Someone had to do it, for the sake of humanity.
+PoC of Doom running on Paraview-Catalyst. Someone had to do it.
 
 To run this, you'll need :
- - A version of Paraview built with Catalyst enabled
- - Catalyst2 compiled
- - xlib development libraries, as this port is based on the xlib one.
+ - A version of Paraview built with Catalyst enabled (pre-built binaries are fine)
+ - [Catalyst2](https://catalyst-in-situ.readthedocs.io/en/latest/build_and_install.html)
 
 ## Build the project
 ```bash

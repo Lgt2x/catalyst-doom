@@ -11,15 +11,24 @@
 
 namespace CatalystAdaptor {
 
-void Initialize(int argc, char *argv[]) {
+int Initialize(int argc, char *argv[]) {
   conduit_cpp::Node node;
-  node["catalyst/scripts/script"].set_string("../catalyst_pipeline.py");
-  node["catalyst/proxies/proxy"].set_string("../catalyst_proxy.xml");
 
+  if (argc == 3) {
+    node["catalyst/scripts/script"].set_string(std::string(argv[1]));
+    node["catalyst/proxies/proxy"].set_string(std::string(argv[2]));
+  } else {
+    std::cerr << "Usage : doomgeneric <path to script.py> <path to proxy.xml>"
+              << std::endl;
+    return 1;
+  }
   catalyst_status err = catalyst_initialize(conduit_cpp::c_node(&node));
   if (err != catalyst_status_ok) {
     std::cerr << "ERROR: Failed to initialize Catalyst: " << err << std::endl;
+    return 1;
   }
+
+  return 0;
 }
 
 void AddSteerableChannel(conduit_cpp::Node &exec_params) {
@@ -40,6 +49,7 @@ void AddSteerableChannel(conduit_cpp::Node &exec_params) {
   steerable_mesh["fields/steerable/volume_dependent"].set("false");
   steerable_mesh["fields/steerable/values"].set_int32_vector({2});
 }
+
 
 void Execute(int cycle, uint32_t *DG_ScreenBuffer) {
   conduit_cpp::Node exec_params;
@@ -96,11 +106,12 @@ int Steer(unsigned int timeStep) {
     fire = results[fire_path].as_int();
 
   } else {
-    // Waiting for user to click on "SteerableParameters" in the pipeline browser
+    // Waiting for user to click on "SteerableParameters" in the pipeline
+    // browser
     return -1;
   }
 
-  return 5*(fire%2) + direction;
+  return 5 * (fire % 2) + direction;
 }
 
 } // namespace CatalystAdaptor

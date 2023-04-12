@@ -117,7 +117,11 @@ int DG_GetKey(int *pressed, unsigned char *doomKey) {
 void DG_SetWindowTitle(const char *title) {}
 
 int main(int argc, char *argv[]) {
-  CatalystAdaptor::Initialize(argc, argv);
+  if (CatalystAdaptor::Initialize(argc, argv)) {
+    std::cerr << "Init failed, exiting" << std::endl;
+    return 1;
+  }
+
   doomgeneric_Create(argc, argv);
 
   for (int i = 0;; i++) {
