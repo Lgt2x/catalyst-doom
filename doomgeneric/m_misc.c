@@ -68,7 +68,7 @@ boolean M_FileExists(char *filename)
     FILE *fstream;
 
     fstream = fopen(filename, "r");
-
+    
     if (fstream != NULL)
     {
         fclose(fstream);

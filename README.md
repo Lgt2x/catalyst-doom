@@ -9,12 +9,13 @@ To run this, you'll need :
 ## Build the project
 ```bash
 mkdir build && cd build
-cmake .. -Dcatalyst_DIR=<path_to_Catalyst2> && cmake --build .
+cmake ../doomgeneric -Dcatalyst_DIR=<path_to_Catalyst2> && cmake --build .
+cp ../DOOM1.WAD .
 ```
 
 ## Run the game
 ```bash
-CATALYST_IMPLEMENTATION_NAME=paraview CATALYST_IMPLEMENTATION_PATHS=<path_to_Paraview_Catalyst> ./doomgeneric <path_to_catalyst_pipeline.py> <path_to_catalyst_proxy.xml>
+CATALYST_IMPLEMENTATION_NAME=paraview CATALYST_IMPLEMENTATION_PATHS=<path_to_Paraview_Catalyst> ./doomgeneric <path_to_catalyst_pipeline.py> <absolute_path_to_catalyst_proxy.xml>
 ```
 
 Launch Paraview, load macro `macro.py` using `Macro > Import new Macro...` and proxy `catalyst_proxy.xml` using `Tools > Manage plugins > Load New`.
